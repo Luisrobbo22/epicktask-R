@@ -8,7 +8,6 @@ import br.com.fiap.epictask.model.Task;
 
 public interface TaskRepository extends JpaRepository<Task, Long> {
 
-	//select WHERE title LIKE '%api%'
-	Page<Task> findByTitleLike(String title, Pageable pageable);
+	Page<Task> findByTitleContaining(String title, Pageable pageable);
 
 }
