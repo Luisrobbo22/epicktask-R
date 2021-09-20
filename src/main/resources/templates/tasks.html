@@ -1,12 +1,11 @@
 <!DOCTYPE html>
 <html xmlns:th="http://thymeleaf.org">
-<head>
-	<meta charset="UTF-8">
-	<title>Insert title here</title>
-</head>
+<head th:include="_template :: head"></head>
 <body>
 
 <h1>EPIC TASK</h1>
+
+<span class='card' th:if="${message != null}" th:text="${message}"></span>
 
 <h2>Tarefas </h2>
 

@@ -1,34 +1,56 @@
 <!DOCTYPE html>
 <html xmlns:th="http://thymeleaf.org">
-<head>
-	<meta charset="UTF-8">
-	<title>Insert title here</title>
-</head>
+<head th:include="_template :: head"></head>
 <body>
 
 	<h1>Epic Task</h1>
 	
-	<h2>Nova Tarefa</h2>
+	<div class="card">
 	
+		<h2 th:text="#{newtask}"></h2>
+		
+		<form class="form" action="/task" method="post" th:object="${task}">
+			<label class="hide" for="title">Título</label>
+			<input
+				th:classappend="${#fields.hasErrors('title')}? invalid"
+				type="text" 
+				id="title" 
+				name="title" 
+				th:field="*{title}" 
+				th:placeholder="#{label.title}">
+			<span th:errors="*{title}"></span>
+			
+			<label class="hide" for="description">Descrição</label>
+			<textarea 
+				id="description" 
+				name="description" 
+				th:field="*{description}"
+				th:placeholder="#{label.description}">
+			</textarea>
+			<span th:errors="*{description}"></span>
+					
+			
+			<label for="points">Pontos</label>
+			<input 
+				type="range" 
+				name="points" 
+				id="points" 
+				min=10 
+				max=500  
+				th:field="*{points}"
+				step="10"
+				oninput="document.querySelector('#output-points').value=this.value"
+			>
+			<output id="output-points">10</output>
+			<span th:errors="*{points}"></span>
+			
+			<div class="form-buttons">
+				<a class="button" href="/task" th:text="#{button.cancel}"></a>
+				<button class="primary" th:text="#{button.save}"></button>
+			</div>
+		</form>
+	</div>
 	
-	<form action="/task" method="post" th:object="${task}">
-		<label for="title">Título</label>
-		<input id="title" name="title" th:field="*{title}">
-		<span th:errors="*{title}"></span>
-		
-		<label for="description">Descrição</label>
-		<textarea id="description" name="description" 
-				rows="" cols=""  th:field="*{description}"></textarea>
-		<span th:errors="*{description}"></span>
-				
-		
-		<label for="points">Pontos</label>
-		<input type="range" name="points" id="points" min=10 max=500  th:field="*{points}">
-		<span th:errors="*{points}"></span>
-		
-		<a href="/task">Cancelar</a>
-		<button>Salvar</button>
-	</form>
 
 </body>
 </html>

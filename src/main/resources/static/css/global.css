@@ -1,0 +1,64 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;800&display=swap');
+
+:root{
+	--primary:  #FF7178;
+	--secundary: #7F00FF;
+}
+
+
+*{
+	margin: 0;
+	padding: 0;
+}
+
+a{
+	text-decoration: none;
+}
+
+body{
+	height: 100vh;
+	background: linear-gradient(72.72deg, #7F00FF 0.79%, #E100FF 100%);
+	font-family: Poppins;
+	color: #FFF;
+}
+
+h1{
+	font-weight: 600;
+	font-size: 4rem;
+	color: var(--primary);
+	text-shadow: 0px 0px 10px var(--primary);
+}
+
+.card{
+	margin: 0 auto;
+	max-width: 400px;
+	background: linear-gradient(153.66deg, rgba(255, 255, 255, 0.8) -1.09%, rgba(255, 255, 255, 0.08) 100%, rgba(255, 255, 255, 0.08) 100%);
+	backdrop-filter: blur(24px);
+	padding: 3rem;
+	border-radius: 10px;
+}
+
+.card h2{
+	font-weight: 600;
+	font-size: 1.5rem;
+	text-shadow: 2px 2px 3px rgba(0, 0, 0, 0.25);
+}
+
+.button,
+button{
+	background: #7F00FF;
+	border-radius: 10px;
+	font-family: Poppins;
+	font-size: 1.1rem;
+	text-align: center;
+	border: 0;
+	padding: 0.2rem 2rem;	
+	color: #FFFFFF;
+	cursor: pointer;
+}
+
+.button.primary,
+button.primary{
+	background: var(--primary);
+	box-shadow: 0px 0px 7px var(--primary);
+}
