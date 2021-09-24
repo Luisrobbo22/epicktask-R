@@ -5,6 +5,19 @@ CREATE TABLE task (
 	points int
 );
 
+CREATE TABLE user (
+	id bigint PRIMARY KEY auto_increment,
+	name varchar(200),
+	email varchar(200),
+	password varchar(200)
+	
+);
+
+INSERT INTO user (name, email, password) VALUES
+('Joao Carlos', 'joao@gmail.com', '123'),
+('Carla Lopes', 'carla@gmail.com', '123'),
+('Fabio Cabrini', 'fabio@fiap.com.br', '123');
+
 INSERT INTO task (title, description, points) VALUES(
 	'Criar banco de dados',
 	'Criação do banco de dados oracle',
