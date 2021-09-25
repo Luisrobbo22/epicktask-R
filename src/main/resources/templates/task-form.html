@@ -9,7 +9,7 @@
 	
 		<h2 th:text="#{newtask}"></h2>
 		
-		<form class="form" action="/task" method="post" th:object="${task}">
+		<form class="form" th:action="@{/task}" method="post" th:object="${task}">
 			<label class="hide" for="title">Título</label>
 			<input
 				th:classappend="${#fields.hasErrors('title')}? invalid"
