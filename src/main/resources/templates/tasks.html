@@ -3,7 +3,8 @@
 <head th:include="_template :: head"></head>
 <body>
 
-<h1>EPIC TASK</h1>
+<header th:include="_template :: header"></header>
+
 <div class="alert" th:if="${message != null}" th:text="${message}"></div>
 	
 	<div class="card">
@@ -24,12 +25,30 @@
 				<p th:text="${task.description}"></p>
 				<meter min="0" low="30" high="80" max="100" th:value="${task.status}"></meter>
 				<div class="task-actions">
-					<img class="avatar" alt="ower" src="https://avatars.githubusercontent.com/u/5585727?v=4">
-					<button class="icon primary" th:title="#{task.catch}">
-						<span class="material-icons">
-							back_hand
-						</span>
-					</button>
+					
+					<span>
+						<img 
+							th:title="${task.user.name}"
+							th:if="${task.user != null}"
+							class="avatar" 
+							alt="ower" 
+							th:src="${task.user.avatarUrl}"
+						>
+					</span>
+					<form th:if="${task.user == null}" th:action="${'/task/hold/' + task.id}" method="post">
+						<button class="icon primary" th:title="#{button.hold}">
+							<span class="material-icons">
+								back_hand
+							</span>
+						</button>
+					</form>
+					<form th:if="${task.user == #authentication.getPrincipal()}" th:action="${'/task/release/' + task.id}" method="post">
+						<button class="icon primary default" th:title="#{button.release}">
+							<span class="material-icons">
+								waving_hand
+							</span>
+						</button>
+					</form>
 				</div>
 			</div>
 		
