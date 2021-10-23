@@ -5,6 +5,7 @@ import java.util.Optional;
 
 import javax.validation.Valid;
 
+import br.com.fiap.epictask.service.TaskService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
@@ -30,14 +31,15 @@ public class TaskController {
 	
 	@Autowired
 	private MessageSource messages;
-	
+
 	@Autowired
-	private TaskRepository repository;
+	private TaskService service;
+
 	
 	@GetMapping
 	public ModelAndView index() {
 		ModelAndView modelAndView = new ModelAndView("tasks");
-		List<Task> tasks = repository.findAll();
+		List<Task> tasks = service.findAll();
 		modelAndView.addObject("tasks", tasks);
 		return modelAndView;
 	}
@@ -50,44 +52,22 @@ public class TaskController {
 	@PostMapping
 	public String save(@Valid Task task, BindingResult result, RedirectAttributes redirect) {
 		if(result.hasErrors()) return "task-form";
-		repository.save(task);
+		service.create(task);
 		redirect.addFlashAttribute("message", messages.getMessage("message.success.newtask", null, LocaleContextHolder.getLocale()) );
 		return "redirect:/task";
 	}
 	
 	@PostMapping("/hold/{id}")
 	public String hold(@PathVariable Long id, Authentication auth) {
-		Optional<Task> optional = repository.findById(id);
-		Task task = optional.get();
-		
-		if (optional.isEmpty()) 
-			throw new TaskNotFoundException("Tarefa não encontrada");
-	
-		
-		if (task.getUser() != null)
-			throw new NotAllowedException("Tarefa já está atribuída para outro usuário");
-		
-		User user = (User) auth.getPrincipal();
-		task.setUser(user);
-		repository.save(task);
+		final Task task = service.buildTaskHold(id, auth);
+		service.create(task);
 		return "redirect:/task";
 	}
 	
 	@PostMapping("/release/{id}")
 	public String release(@PathVariable Long id, Authentication auth) {
-		Optional<Task> optional = repository.findById(id);
-		Task task = optional.get();
-		
-		if (optional.isEmpty()) 
-			throw new TaskNotFoundException("Tarefa não encontrada");
-	
-		User user = (User) auth.getPrincipal();
-		
-		if (task.getUser() != user)
-			throw new NotAllowedException("Essa tarefa não está atribuída para você");
-		
-		task.setUser(null);
-		repository.save(task);
+		final Task task = service.buildTaskRelease(id, auth);
+		service.create(task);
 		return "redirect:/task";
 	}
 	

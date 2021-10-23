@@ -42,7 +42,15 @@ public class User implements UserDetails {
 
 	@ManyToMany(fetch = FetchType.EAGER)
 	private Collection<Role> roles;
-	
+
+	public User(String name, String email, String githubuser) {
+	}
+
+	public User() {
+
+	}
+
+
 	public String getAvatarUrl() {
 		return "https://avatars.githubusercontent.com/" + this.githubuser;
 	}

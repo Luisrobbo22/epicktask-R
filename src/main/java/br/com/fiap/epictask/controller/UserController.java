@@ -1,55 +1,100 @@
 package br.com.fiap.epictask.controller;
 
-import java.util.List;
-
-import javax.validation.Valid;
-
+import br.com.fiap.epictask.dto.UserDTO;
+import br.com.fiap.epictask.model.User;
+import br.com.fiap.epictask.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import br.com.fiap.epictask.model.User;
-import br.com.fiap.epictask.repository.UserRepository;
-import br.com.fiap.epictask.service.AuthenticationService;
+import javax.validation.Valid;
+import java.util.List;
+import java.util.Optional;
 
 @Controller
 @RequestMapping("/user")
 public class UserController {
-	
-	@Autowired
-	private UserRepository repository;
-	
-	@Autowired
-	private MessageSource messages;
-	
-	@GetMapping
-	public ModelAndView index() {
-		ModelAndView modelAndView = new ModelAndView("users");
-		List<User> users = repository.findAll();
+
+    @Autowired
+    private UserService userService;
+
+    @Autowired
+    private MessageSource messages;
+
+    @GetMapping
+    public ModelAndView index(@PageableDefault Pageable pageable) {
+        ModelAndView modelAndView = new ModelAndView("users");
+        Page<User> users = userService.findAll(pageable);
+
+        modelAndView.addObject("users", users);
+        System.out.println(users);
+        return modelAndView;
+    }
+
+    @RequestMapping("new")
+    public String create(User user) {
+        return "user-form";
+    }
+
+    @PostMapping
+    public String save(@Valid User user, BindingResult result, RedirectAttributes redirect) {
+        userService.create(user);
+
+        if (result.hasErrors())
+            return "user-form";
+
+        userService.configurePassword(user);
+
+        redirect.addFlashAttribute("message",
+                messages.getMessage("message.success.newuser",
+                        null,
+                        LocaleContextHolder.getLocale()));
+        return "redirect:user";
+    }
+
+
+    @RequestMapping("/delete/{id}")
+    public ModelAndView delete(@PathVariable Long id, RedirectAttributes redirect) {
+        ModelAndView modelAndView = new ModelAndView("users");
+        List<User> users = userService.remove(id);
+
 		modelAndView.addObject("users", users);
-		System.out.println(users);
+
 		return modelAndView;
-	}
-	
-	@RequestMapping("new")
-	public String create(User user) {
-		return "user-form";
-	}
-	
-	@PostMapping
-	public String save(@Valid User user, BindingResult result, RedirectAttributes redirect) {
-		repository.save(user);
-		if(result.hasErrors()) return "user-form";
-		user.setPassword(AuthenticationService.getPasswordEnconder().encode( user.getPassword() ));
-		redirect.addFlashAttribute("message", messages.getMessage("message.success.newuser", null, LocaleContextHolder.getLocale()));
-		return "redirect:user";
-	}
+}
+
+    @GetMapping("/update/{id}")
+    public ModelAndView update(@PathVariable Long id) {
+        ModelAndView modelAndView = new ModelAndView("change-users");
+        Optional<User> optionalUser = userService.findById(id);
+
+        User user = optionalUser.get();
+
+        modelAndView.addObject("user", user);
+
+        return modelAndView;
+    }
+
+    @PostMapping(value = "/update", consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
+    public ModelAndView update(@Valid User user) {
+        ModelAndView modelAndView = new ModelAndView("users");
+        Optional<User> userOptional = userService.findByEmail(user);
+
+        User newuser = userOptional.get();
+        List<User> users = userService.update(newuser, user);
+
+        modelAndView.addObject("users", users);
+
+        return modelAndView;
+    }
 
 }
