@@ -12,7 +12,8 @@ CREATE TABLE user (
 	name varchar(200),
 	email varchar(200),
 	password varchar(200),
-	githubuser varchar(200)
+	githubuser varchar(200),
+	points int
 	
 );
 
@@ -27,11 +28,11 @@ INSERT INTO  USER_ROLES VALUES (4,1);
 INSERT INTO  USER_ROLES VALUES (2,2);
 INSERT INTO  USER_ROLES VALUES (3,2);
 
-INSERT INTO user (name, email, password, githubuser) VALUES
-('Luis Robbo', 'luis@gmail.com', '$2a$12$g9tJetbQ7QljdEcAKQIPxeIVae8Ofh.b2afO4coTshDUHV6NiL2oO', 'Luisrobbo22'),
-('Carla Lopes', 'carla@gmail.com', '$2a$12$g9tJetbQ7QljdEcAKQIPxeIVae8Ofh.b2afO4coTshDUHV6NiL2oO', 'carla'),
-('Fabio Cabrini', 'fabio@fiap.com.br', '$2a$12$g9tJetbQ7QljdEcAKQIPxeIVae8Ofh.b2afO4coTshDUHV6NiL2oO', 'marcis'),
-('Administrador', 'admin@fiap.com.br', '$2b$10$OPBBIiAhxLMmj7NCDRrnG.J/X5fwh6SFDkYDlfS/My/mdBYIz8qAC', 'administrador');
+INSERT INTO user (name, email, password, githubuser, points) VALUES
+('Luis Robbo', 'luis@gmail.com', '$2a$12$g9tJetbQ7QljdEcAKQIPxeIVae8Ofh.b2afO4coTshDUHV6NiL2oO', 'Luisrobbo22', 250),
+('Carla Lopes', 'carla@gmail.com', '$2a$12$g9tJetbQ7QljdEcAKQIPxeIVae8Ofh.b2afO4coTshDUHV6NiL2oO', 'carla', 80),
+('Fabio Cabrini', 'fabio@fiap.com.br', '$2a$12$g9tJetbQ7QljdEcAKQIPxeIVae8Ofh.b2afO4coTshDUHV6NiL2oO', 'marcis', 200),
+('Administrador', 'admin@fiap.com.br', '$2b$10$OPBBIiAhxLMmj7NCDRrnG.J/X5fwh6SFDkYDlfS/My/mdBYIz8qAC', 'administrador', 190);
 
 INSERT INTO task (title, description, points, status, user_id) VALUES(
 	'Criar banco de dados',
@@ -55,3 +56,12 @@ INSERT INTO task (title, description, points, status, user_id) VALUES(
 	95,
 	2
 );
+
+INSERT INTO task (title, description, points, status, user_id) VALUES(
+    'Arquitetura de Cloud',
+    'Desenvolver protótipo da arquitetura do sistema',
+    200,
+    100,
+    1
+);
+

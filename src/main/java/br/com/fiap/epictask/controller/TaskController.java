@@ -1,7 +1,6 @@
 package br.com.fiap.epictask.controller;
 
 import java.util.List;
-import java.util.Optional;
 
 import javax.validation.Valid;
 
@@ -19,11 +18,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import br.com.fiap.epictask.exception.NotAllowedException;
-import br.com.fiap.epictask.exception.TaskNotFoundException;
 import br.com.fiap.epictask.model.Task;
-import br.com.fiap.epictask.model.User;
-import br.com.fiap.epictask.repository.TaskRepository;
 
 @Controller
 @RequestMapping("/task")
@@ -39,7 +34,7 @@ public class TaskController {
 	@GetMapping
 	public ModelAndView index() {
 		ModelAndView modelAndView = new ModelAndView("tasks");
-		List<Task> tasks = service.findAll();
+		List<Task> tasks = service.listTaskNotFinalized();
 		modelAndView.addObject("tasks", tasks);
 		return modelAndView;
 	}
@@ -70,21 +65,16 @@ public class TaskController {
 		service.create(task);
 		return "redirect:/task";
 	}
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
+
+	@GetMapping("/finalized")
+	public ModelAndView listTaskFinalized(RedirectAttributes redirect){
+		ModelAndView modelAndView = new ModelAndView("task-finalized");
+		final List<Task> tasks = service.listTaskFinalized();
+		if (tasks.size() == 0)
+			redirect.addFlashAttribute("message", messages.getMessage("message.success.deleteduser", null, LocaleContextHolder.getLocale()) );
+		modelAndView.addObject("tasks", tasks);
+		return modelAndView;
+
+	}
 
 }

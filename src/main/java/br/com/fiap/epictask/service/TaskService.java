@@ -18,5 +18,9 @@ public interface TaskService {
 
     Task buildTaskHold(Long id, Authentication auth);
 
+    List<Task> listTaskFinalized();
+
+    List<Task> listTaskNotFinalized();
+
 
 }

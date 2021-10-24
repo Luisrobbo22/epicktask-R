@@ -40,6 +40,8 @@ public class User implements UserDetails {
 	@NotBlank(message = "{user.github.blank}")
 	private String githubuser;
 
+	private int points;
+
 	@ManyToMany(fetch = FetchType.EAGER)
 	private Collection<Role> roles;
 

@@ -73,11 +73,12 @@ public class UserController {
 }
 
     @GetMapping("/update/{id}")
-    public ModelAndView update(@PathVariable Long id) {
+    public ModelAndView update(@PathVariable Long id, RedirectAttributes redirect) {
         ModelAndView modelAndView = new ModelAndView("change-users");
         Optional<User> optionalUser = userService.findById(id);
 
         User user = optionalUser.get();
+        redirect.addFlashAttribute("message", messages.getMessage("message.success.rankingnotexist", null, LocaleContextHolder.getLocale()) );
 
         modelAndView.addObject("user", user);
 
