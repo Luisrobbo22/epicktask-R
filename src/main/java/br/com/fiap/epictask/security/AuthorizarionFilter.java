@@ -3,10 +3,7 @@ package br.com.fiap.epictask.security;
 import br.com.fiap.epictask.model.User;
 import br.com.fiap.epictask.repository.UserRepository;
 import br.com.fiap.epictask.service.TokenService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.jpa.repository.support.SimpleJpaRepository;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.filter.OncePerRequestFilter;
 

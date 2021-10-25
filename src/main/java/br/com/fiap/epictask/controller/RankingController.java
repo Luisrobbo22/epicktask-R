@@ -1,8 +1,6 @@
 package br.com.fiap.epictask.controller;
 
-import br.com.fiap.epictask.model.Task;
 import br.com.fiap.epictask.model.User;
-import br.com.fiap.epictask.service.TaskService;
 import br.com.fiap.epictask.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
