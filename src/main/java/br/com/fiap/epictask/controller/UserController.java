@@ -1,6 +1,5 @@
 package br.com.fiap.epictask.controller;
 
-import br.com.fiap.epictask.dto.UserDTO;
 import br.com.fiap.epictask.model.User;
 import br.com.fiap.epictask.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,7 +11,10 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -88,7 +90,7 @@ public class UserController {
     @PostMapping(value = "/update", consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
     public ModelAndView update(@Valid User user) {
         ModelAndView modelAndView = new ModelAndView("users");
-        Optional<User> userOptional = userService.findByEmail(user);
+        Optional<User> userOptional = userService.findById(user.getId());
 
         User newuser = userOptional.get();
         List<User> users = userService.update(newuser, user);
